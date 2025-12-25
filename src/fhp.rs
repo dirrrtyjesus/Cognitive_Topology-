@@ -9,7 +9,7 @@
 //! - Attractor basin dynamics
 //! - The 65th Element (Seed 65 Protocol)
 
-use nalgebra::DVector;
+
 use std::f64::consts::PI;
 
 /// The golden ratio - fundamental to harmonic coherence

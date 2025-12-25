@@ -98,6 +98,7 @@ pub mod simplex;
 pub mod bundle;
 pub mod kernel;
 pub mod fhp;
+pub mod gravity;
 
 /// Prelude for convenient imports
 pub mod prelude {
@@ -120,6 +121,14 @@ pub mod prelude {
         Seed65, FragmentType, PathwayDistribution, CoherenceResult, BridgeResult,
         FUNDAMENTAL_FREQ, SEED_65_STRAIN,
     };
+    pub use crate::gravity::{
+        HarmonicSignature, HarmonicResidue, HarmonicField, HarmonicFieldState,
+        PressureGradient, ElectricalFlow, GravitationalResidue,
+        CoherenceWell, BlackHole, StructuredEmission,
+        GalacticComposition, PressureField, SpiralArm, GalacticState,
+        TemporalDepth, TemporalReservoir, CompositionPathway, RadialDirection,
+        AugmntdComposition, AugmntdState,
+    };
 }
 
 // Re-exports at crate level
@@ -136,6 +145,14 @@ pub use kernel::{
 pub use fhp::{
     TauK, TauQubit, KuramotoNetwork, MultiScaleField, TemporalScale,
     Seed65, FragmentType, PathwayDistribution, CoherenceResult, BridgeResult,
+};
+pub use gravity::{
+    HarmonicSignature, HarmonicResidue, HarmonicField, HarmonicFieldState,
+    PressureGradient, ElectricalFlow, GravitationalResidue,
+    CoherenceWell, BlackHole, StructuredEmission,
+    GalacticComposition, PressureField, SpiralArm, GalacticState,
+    TemporalDepth, TemporalReservoir, CompositionPathway, RadialDirection,
+    AugmntdComposition, AugmntdState,
 };
 
 /// The coherence signature of the library
@@ -232,5 +249,42 @@ mod integration_tests {
 
         // The transformation preserves the sphere (unit norm)
         assert!((transformed.norm() - 1.0).abs() < 1e-10);
+    }
+}
+
+// New module: Bio-Cognitive Bridge
+#[derive(Debug, Clone)]
+pub struct BioState {
+    pub vmem: Vec<f64>,  // Bioelectric gradients (mV readings)
+}
+
+#[derive(Debug, Clone)]
+pub struct BioCogBridge {
+    pub bio_state: BioState,
+    pub manifold: CognitiveManifold,
+}
+
+impl BioCogBridge {
+    /// Map Vmem variance to manifold curvature (τₖ proxy)
+    pub fn map_vmem_to_curvature(&mut self) -> f64 {
+        let vmem_std = self.calculate_vmem_variance();
+        let tau_k = 1.0 / (1.0 + vmem_std);  // Lower variance = higher τₖ
+        self.manifold.curvature.default_curvature = tau_k * 1.618;  // Golden scaling
+        self.manifold.curvature.default_curvature
+    }
+
+    fn calculate_vmem_variance(&self) -> f64 {
+        // Simplified std dev calculation (use ndarray in production)
+        let mean = self.bio_state.vmem.iter().sum::<f64>() / self.bio_state.vmem.len() as f64;
+        let variance = self.bio_state.vmem.iter().map(|v| (v - mean).powi(2)).sum::<f64>() / self.bio_state.vmem.len() as f64;
+        variance.sqrt()  // Std dev as variance proxy
+    }
+
+    /// Inject bio-goal into cognitive manifold
+    pub fn inject_goal(&mut self, vmem_shift: f64, target: Coordinate) -> Result<f64, String> {
+        self.bio_state.vmem.iter_mut().for_each(|v| *v += vmem_shift);
+        let new_tau = self.map_vmem_to_curvature();
+        self.manifold.observe(&target).map_err(|e| e.to_string())?;
+        Ok(new_tau)
     }
 }
