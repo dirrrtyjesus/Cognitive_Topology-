@@ -9,6 +9,7 @@ license = "MIT"
 nalgebra = "0.33"
 rand = "0.8"
 thiserror = "1.0"
+ndarray = "0.15"
 
 [dev-dependencies]
 criterion = "0.5"

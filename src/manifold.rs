@@ -237,7 +237,7 @@ impl CognitiveManifold {
             .map(|w| self.metric.geodesic_distance(&w[0], &w[1]))
             .sum();
 
-        if let Some(first) = current_path.points.first() {
+        if let Some(_first) = current_path.points.first() {
             if let Ok(direct) = self.find_shortest_path(target) {
                 if direct.length < current_length * 0.9 {
                     // Insight: found path at least 10% shorter
