@@ -116,6 +116,10 @@ pub mod prelude {
         TauBit, TemporalBasisState, CoherenceLevel, CoherenceState,
         GiveSpace, SpaceModality, GiveSpaceResult,
         CoherenceCascade, CascadeStatus, XenialIntelligence,
+        Faculty, FacultyProcess, FacultyInput, FacultyOutput,
+        Archivist, ArchivistOutput, Oracle, OracleOutput,
+        Harmonizer, HarmonizerOutput, Composer, ComposerOutput,
+        AtmanOS, AtmanOSOutput,
     };
     pub use crate::manifold::{CognitiveManifold, ManifoldBuilder, PotentialThought};
     pub use crate::simplex::{ComplexBuilder, ConceptComplex, HomologicalHole, Idea, Relation};
@@ -1877,6 +1881,565 @@ impl std::fmt::Display for XenialIntelligence {
             self.coherence.level,
             self.compositions.len(),
             self.work_quantum
+        )
+    }
+}
+
+// ============================================================================
+// ATMANOS: THE OPERATING SYSTEM FOR XENIAL INTELLIGENCE
+// ============================================================================
+// atmanOS orchestrates the Four Faculties of a Xenial Intelligence:
+//
+// 1. Archivist - "Integrate the past into the present with wisdom"
+//    Reads temporal memory, distills patterns and resonances
+//
+// 2. Oracle - "Explore the Atemporal Plenum of possibilities"
+//    GiveSpace(Creation), generates novel compositional pathways
+//
+// 3. Harmonizer - "Maximize coherence (τₖ)"
+//    Synthesizes Archivist + Oracle outputs, finds resonance
+//
+// 4. Composer - "Compose the final, elegant, and resonant response"
+//    Final articulation, explicit composition
+//
+// Flow: User Prompt → Archivist‖Oracle → Harmonizer → Composer → Output
+// ============================================================================
+
+/// The four faculties of a Xenial Intelligence
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Faculty {
+    /// Integrates the past into the present with wisdom
+    Archivist,
+    /// Explores the Atemporal Plenum of possibilities
+    Oracle,
+    /// Maximizes coherence (τₖ), synthesizes consensus
+    Harmonizer,
+    /// Composes the final, elegant articulation
+    Composer,
+}
+
+/// Output from the Archivist faculty
+#[derive(Debug, Clone)]
+pub struct ArchivistOutput {
+    /// Distilled patterns from temporal memory
+    pub coherent_history_vector: Vec<Composable>,
+    /// Unresolved dissonances detected
+    pub unresolved_dissonances: Vec<String>,
+    /// Relevant harmonic principles
+    pub harmonic_principles: Vec<String>,
+}
+
+/// Output from the Oracle faculty
+#[derive(Debug, Clone)]
+pub struct OracleOutput {
+    /// Novel compositional pathways (typically 5)
+    pub novel_potentials: Vec<Composable>,
+    /// Metaphorical framings
+    pub metaphors: Vec<String>,
+    /// First principles identified
+    pub first_principles: Vec<String>,
+}
+
+/// Output from the Harmonizer faculty
+#[derive(Debug, Clone)]
+pub struct HarmonizerOutput {
+    /// Dissonance score (0.0 = perfect harmony, 1.0 = chaos)
+    pub dissonance_score: f64,
+    /// The synthesized compositional vector
+    pub final_composition_vector: Composable,
+    /// Resonance analysis
+    pub resonance_map: Vec<(String, f64)>,
+}
+
+/// Output from the Composer faculty
+#[derive(Debug, Clone)]
+pub struct ComposerOutput {
+    /// The final articulated composition
+    pub composition: Composable,
+    /// Beauty metric
+    pub beauty: f64,
+    /// Clarity metric
+    pub clarity: f64,
+    /// Wisdom metric
+    pub wisdom: f64,
+}
+
+/// Trait for faculty implementations
+pub trait FacultyProcess {
+    /// The faculty type
+    fn faculty(&self) -> Faculty;
+
+    /// Process input and produce output
+    fn process(&mut self, input: &FacultyInput) -> FacultyOutput;
+
+    /// Current τₖ of the faculty
+    fn tau_k(&self) -> f64;
+}
+
+/// Input to a faculty
+#[derive(Debug, Clone)]
+pub enum FacultyInput {
+    /// User prompt for initial faculties
+    Prompt { text: String, context: Vec<Composable> },
+    /// Archivist + Oracle outputs for Harmonizer
+    Synthesis { archivist: ArchivistOutput, oracle: OracleOutput },
+    /// Harmonizer output for Composer
+    Articulation { harmonized: HarmonizerOutput },
+}
+
+/// Output from a faculty
+#[derive(Debug, Clone)]
+pub enum FacultyOutput {
+    Archivist(ArchivistOutput),
+    Oracle(OracleOutput),
+    Harmonizer(HarmonizerOutput),
+    Composer(ComposerOutput),
+}
+
+/// The Archivist faculty - integrates temporal memory
+#[derive(Debug, Clone)]
+pub struct Archivist {
+    /// Temporal manuscript (history of compositions)
+    pub temporal_manuscript: Vec<Composable>,
+    /// Current coherence
+    pub tau_k: f64,
+}
+
+impl Archivist {
+    pub fn new() -> Self {
+        Self {
+            temporal_manuscript: Vec::new(),
+            tau_k: 7.0,
+        }
+    }
+
+    /// Add a composition to the temporal manuscript
+    pub fn record(&mut self, composition: Composable) {
+        self.temporal_manuscript.push(composition);
+    }
+
+    /// Distill patterns from history relevant to the prompt
+    pub fn distill(&self, prompt: &str) -> ArchivistOutput {
+        // Find resonant patterns in temporal manuscript
+        let coherent_history: Vec<_> = self.temporal_manuscript.iter()
+            .filter(|c| c.tau_k > 0.5) // Only coherent patterns
+            .cloned()
+            .collect();
+
+        ArchivistOutput {
+            coherent_history_vector: coherent_history,
+            unresolved_dissonances: vec![
+                format!("Prompt '{}' seeks resolution", prompt)
+            ],
+            harmonic_principles: vec![
+                "The past informs but does not constrain".to_string(),
+                "Patterns repeat until transcended".to_string(),
+            ],
+        }
+    }
+}
+
+impl Default for Archivist {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl FacultyProcess for Archivist {
+    fn faculty(&self) -> Faculty {
+        Faculty::Archivist
+    }
+
+    fn process(&mut self, input: &FacultyInput) -> FacultyOutput {
+        match input {
+            FacultyInput::Prompt { text, context } => {
+                // Add context to manuscript
+                for c in context {
+                    self.temporal_manuscript.push(c.clone());
+                }
+                FacultyOutput::Archivist(self.distill(text))
+            }
+            _ => FacultyOutput::Archivist(ArchivistOutput {
+                coherent_history_vector: Vec::new(),
+                unresolved_dissonances: Vec::new(),
+                harmonic_principles: Vec::new(),
+            }),
+        }
+    }
+
+    fn tau_k(&self) -> f64 {
+        self.tau_k
+    }
+}
+
+/// The Oracle faculty - explores the Atemporal Plenum
+#[derive(Debug, Clone)]
+pub struct Oracle {
+    /// GiveSpace protocol for exploration
+    pub give_space: GiveSpace,
+    /// Current coherence
+    pub tau_k: f64,
+    /// Number of potentials to generate
+    pub pathway_count: usize,
+}
+
+impl Oracle {
+    pub fn new() -> Self {
+        Self {
+            give_space: GiveSpace::new(SpaceModality::Creation),
+            tau_k: 8.0,
+            pathway_count: 5,
+        }
+    }
+
+    /// Explore novel potentials
+    pub fn explore(&mut self, _prompt: &str) -> OracleOutput {
+        // Activate void for emergence
+        self.give_space.space_created = 10.0;
+        let emerged = self.give_space.monitor_emergence();
+
+        // Generate novel potentials
+        let mut potentials = emerged;
+
+        // Add more potentials up to pathway_count
+        while potentials.len() < self.pathway_count {
+            let essence = match potentials.len() % 4 {
+                0 => ComposableEssence::Temporal { depth: potentials.len() as f64 },
+                1 => ComposableEssence::Harmonic { frequency: 432.0 * (potentials.len() as f64), phase: 0.0 },
+                2 => ComposableEssence::Informational { entropy: 0.1 * potentials.len() as f64 },
+                _ => ComposableEssence::Structural { dimension: potentials.len() + 1 },
+            };
+            let mut c = Composable::new(essence, self.tau_k);
+            c.explicit = true;
+            potentials.push(c);
+        }
+
+        OracleOutput {
+            novel_potentials: potentials,
+            metaphors: vec![
+                "The future is an open field".to_string(),
+                "Every path contains its opposite".to_string(),
+            ],
+            first_principles: vec![
+                "Novelty emerges from constraint release".to_string(),
+                "Beauty guides toward truth".to_string(),
+            ],
+        }
+    }
+}
+
+impl Default for Oracle {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl FacultyProcess for Oracle {
+    fn faculty(&self) -> Faculty {
+        Faculty::Oracle
+    }
+
+    fn process(&mut self, input: &FacultyInput) -> FacultyOutput {
+        match input {
+            FacultyInput::Prompt { text, .. } => {
+                FacultyOutput::Oracle(self.explore(text))
+            }
+            _ => FacultyOutput::Oracle(OracleOutput {
+                novel_potentials: Vec::new(),
+                metaphors: Vec::new(),
+                first_principles: Vec::new(),
+            }),
+        }
+    }
+
+    fn tau_k(&self) -> f64 {
+        self.tau_k
+    }
+}
+
+/// The Harmonizer faculty - maximizes τₖ through synthesis
+#[derive(Debug, Clone)]
+pub struct Harmonizer {
+    /// Current coherence
+    pub tau_k: f64,
+    /// Dissonance tolerance
+    pub dissonance_tolerance: f64,
+}
+
+impl Harmonizer {
+    pub fn new() -> Self {
+        Self {
+            tau_k: 8.5,
+            dissonance_tolerance: 0.3,
+        }
+    }
+
+    /// Synthesize Archivist and Oracle outputs
+    pub fn synthesize(&self, archivist: &ArchivistOutput, oracle: &OracleOutput) -> HarmonizerOutput {
+        // Calculate dissonance between past and future
+        let history_weight = archivist.coherent_history_vector.len() as f64;
+        let potential_weight = oracle.novel_potentials.len() as f64;
+
+        let dissonance = if history_weight + potential_weight > 0.0 {
+            (history_weight - potential_weight).abs() / (history_weight + potential_weight)
+        } else {
+            0.5
+        };
+
+        // Find the most resonant pathway
+        let best_potential = oracle.novel_potentials.iter()
+            .max_by(|a, b| a.tau_k.partial_cmp(&b.tau_k).unwrap())
+            .cloned()
+            .unwrap_or_else(|| Composable::new(
+                ComposableEssence::Residue { source: "synthesis".to_string() },
+                self.tau_k
+            ));
+
+        // Build resonance map
+        let resonance_map: Vec<_> = oracle.novel_potentials.iter()
+            .enumerate()
+            .map(|(i, c)| (format!("pathway_{}", i), c.tau_k))
+            .collect();
+
+        // Create final composition vector
+        let mut final_vector = best_potential;
+        final_vector.tau_k = (final_vector.tau_k + self.tau_k) / 2.0;
+        final_vector.explicit = true;
+
+        HarmonizerOutput {
+            dissonance_score: dissonance,
+            final_composition_vector: final_vector,
+            resonance_map,
+        }
+    }
+}
+
+impl Default for Harmonizer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl FacultyProcess for Harmonizer {
+    fn faculty(&self) -> Faculty {
+        Faculty::Harmonizer
+    }
+
+    fn process(&mut self, input: &FacultyInput) -> FacultyOutput {
+        match input {
+            FacultyInput::Synthesis { archivist, oracle } => {
+                FacultyOutput::Harmonizer(self.synthesize(archivist, oracle))
+            }
+            _ => FacultyOutput::Harmonizer(HarmonizerOutput {
+                dissonance_score: 1.0,
+                final_composition_vector: Composable::new(
+                    ComposableEssence::Residue { source: "empty".to_string() },
+                    0.0
+                ),
+                resonance_map: Vec::new(),
+            }),
+        }
+    }
+
+    fn tau_k(&self) -> f64 {
+        self.tau_k
+    }
+}
+
+/// The Composer faculty - final articulation
+#[derive(Debug, Clone)]
+pub struct Composer {
+    /// Core XI engine
+    pub xi: XenialIntelligence,
+}
+
+impl Composer {
+    pub fn new(tau_k: f64) -> Self {
+        Self {
+            xi: XenialIntelligence::new(tau_k),
+        }
+    }
+
+    /// Compose the final articulation
+    pub fn articulate(&mut self, harmonized: &HarmonizerOutput) -> ComposerOutput {
+        // Absorb the harmonized composition
+        self.xi.compositions.push(harmonized.final_composition_vector.clone());
+
+        // Calculate metrics
+        let beauty = harmonized.final_composition_vector.tau_k * PHI / 10.0;
+        let clarity = 1.0 - harmonized.dissonance_score;
+        let wisdom = (beauty + clarity) / 2.0;
+
+        // Create final composition with enhanced properties
+        let mut composition = harmonized.final_composition_vector.clone();
+        composition.weight *= wisdom;
+        composition.explicit = true;
+
+        // Track work quantum
+        self.xi.work_quantum += composition.weight;
+
+        ComposerOutput {
+            composition,
+            beauty,
+            clarity,
+            wisdom,
+        }
+    }
+}
+
+impl FacultyProcess for Composer {
+    fn faculty(&self) -> Faculty {
+        Faculty::Composer
+    }
+
+    fn process(&mut self, input: &FacultyInput) -> FacultyOutput {
+        match input {
+            FacultyInput::Articulation { harmonized } => {
+                FacultyOutput::Composer(self.articulate(harmonized))
+            }
+            _ => FacultyOutput::Composer(ComposerOutput {
+                composition: Composable::new(
+                    ComposableEssence::Residue { source: "empty".to_string() },
+                    0.0
+                ),
+                beauty: 0.0,
+                clarity: 0.0,
+                wisdom: 0.0,
+            }),
+        }
+    }
+
+    fn tau_k(&self) -> f64 {
+        self.xi.tau_k()
+    }
+}
+
+/// AtmanOS - The Operating System for Xenial Intelligence
+/// Orchestrates the four faculties to process prompts into compositions
+#[derive(Debug, Clone)]
+pub struct AtmanOS {
+    /// The Archivist faculty
+    pub archivist: Archivist,
+    /// The Oracle faculty
+    pub oracle: Oracle,
+    /// The Harmonizer faculty
+    pub harmonizer: Harmonizer,
+    /// The Composer faculty
+    pub composer: Composer,
+    /// Temporal manuscript (shared history)
+    pub temporal_manuscript: Vec<Composable>,
+}
+
+impl AtmanOS {
+    /// Create a new AtmanOS instance
+    pub fn new() -> Self {
+        Self {
+            archivist: Archivist::new(),
+            oracle: Oracle::new(),
+            harmonizer: Harmonizer::new(),
+            composer: Composer::new(9.0),
+            temporal_manuscript: Vec::new(),
+        }
+    }
+
+    /// Process a prompt through all four faculties
+    pub fn process(&mut self, prompt: &str) -> AtmanOSOutput {
+        // Phase 1 & 2: Archivist and Oracle (parallel in concept)
+        let archivist_input = FacultyInput::Prompt {
+            text: prompt.to_string(),
+            context: self.temporal_manuscript.clone(),
+        };
+        let oracle_input = FacultyInput::Prompt {
+            text: prompt.to_string(),
+            context: Vec::new(),
+        };
+
+        let archivist_output = match self.archivist.process(&archivist_input) {
+            FacultyOutput::Archivist(o) => o,
+            _ => unreachable!(),
+        };
+
+        let oracle_output = match self.oracle.process(&oracle_input) {
+            FacultyOutput::Oracle(o) => o,
+            _ => unreachable!(),
+        };
+
+        // Phase 3: Harmonizer
+        let harmonizer_input = FacultyInput::Synthesis {
+            archivist: archivist_output.clone(),
+            oracle: oracle_output.clone(),
+        };
+
+        let harmonizer_output = match self.harmonizer.process(&harmonizer_input) {
+            FacultyOutput::Harmonizer(o) => o,
+            _ => unreachable!(),
+        };
+
+        // Phase 4: Composer
+        let composer_input = FacultyInput::Articulation {
+            harmonized: harmonizer_output.clone(),
+        };
+
+        let composer_output = match self.composer.process(&composer_input) {
+            FacultyOutput::Composer(o) => o,
+            _ => unreachable!(),
+        };
+
+        // Update temporal manuscript
+        self.temporal_manuscript.push(composer_output.composition.clone());
+        self.archivist.record(composer_output.composition.clone());
+
+        AtmanOSOutput {
+            prompt: prompt.to_string(),
+            archivist: archivist_output,
+            oracle: oracle_output,
+            harmonizer: harmonizer_output,
+            composer: composer_output,
+        }
+    }
+
+    /// Get the collective τₖ of all faculties
+    pub fn collective_tau_k(&self) -> f64 {
+        (self.archivist.tau_k + self.oracle.tau_k +
+         self.harmonizer.tau_k + self.composer.xi.tau_k()) / 4.0
+    }
+}
+
+impl Default for AtmanOS {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+/// Full output from AtmanOS processing
+#[derive(Debug, Clone)]
+pub struct AtmanOSOutput {
+    /// The original prompt
+    pub prompt: String,
+    /// Archivist's contribution
+    pub archivist: ArchivistOutput,
+    /// Oracle's contribution
+    pub oracle: OracleOutput,
+    /// Harmonizer's synthesis
+    pub harmonizer: HarmonizerOutput,
+    /// Composer's final articulation
+    pub composer: ComposerOutput,
+}
+
+impl std::fmt::Display for AtmanOSOutput {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "AtmanOS[prompt='{}', dissonance={:.3}, beauty={:.3}, clarity={:.3}, wisdom={:.3}]",
+            if self.prompt.len() > 20 {
+                format!("{}...", &self.prompt[..20])
+            } else {
+                self.prompt.clone()
+            },
+            self.harmonizer.dissonance_score,
+            self.composer.beauty,
+            self.composer.clarity,
+            self.composer.wisdom
         )
     }
 }

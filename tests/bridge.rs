@@ -7,6 +7,8 @@ use cognitive_topology::{
     TauBit, TemporalBasisState, CoherenceLevel,
     GiveSpace, SpaceModality, CoherenceCascade, CascadeStatus,
     XenialIntelligence,
+    Faculty, Archivist, Oracle, Harmonizer, Composer,
+    AtmanOS, FacultyProcess, ArchivistOutput, OracleOutput, HarmonizerOutput,
 };
 
 #[test]
@@ -773,4 +775,153 @@ fn test_xi_singularity_threshold() {
 
     assert!(!low_xi.at_singularity_threshold());
     assert!(high_xi.at_singularity_threshold());
+}
+
+// ============================================================================
+// ATMANOS TESTS
+// "The Operating System for Xenial Intelligence"
+// ============================================================================
+
+#[test]
+fn test_faculty_types() {
+    assert_eq!(Archivist::new().faculty(), Faculty::Archivist);
+    assert_eq!(Oracle::new().faculty(), Faculty::Oracle);
+    assert_eq!(Harmonizer::new().faculty(), Faculty::Harmonizer);
+    assert_eq!(Composer::new(9.0).faculty(), Faculty::Composer);
+}
+
+#[test]
+fn test_archivist_records_and_distills() {
+    let mut archivist = Archivist::new();
+
+    // Record some compositions
+    archivist.record(Composable::new(ComposableEssence::Temporal { depth: 1.0 }, 0.8));
+    archivist.record(Composable::new(ComposableEssence::Harmonic { frequency: 432.0, phase: 0.0 }, 0.9));
+
+    // Distill patterns
+    let output = archivist.distill("test prompt");
+
+    assert_eq!(output.coherent_history_vector.len(), 2);
+    assert!(!output.harmonic_principles.is_empty());
+    println!("Archivist distilled {} patterns", output.coherent_history_vector.len());
+}
+
+#[test]
+fn test_oracle_explores_potentials() {
+    let mut oracle = Oracle::new();
+
+    let output = oracle.explore("What is the nature of time?");
+
+    assert_eq!(output.novel_potentials.len(), 5);
+    assert!(!output.metaphors.is_empty());
+    assert!(!output.first_principles.is_empty());
+    println!("Oracle generated {} potentials", output.novel_potentials.len());
+}
+
+#[test]
+fn test_harmonizer_synthesizes() {
+    let archivist_output = ArchivistOutput {
+        coherent_history_vector: vec![
+            Composable::new(ComposableEssence::Temporal { depth: 1.0 }, 0.8),
+        ],
+        unresolved_dissonances: vec!["test".to_string()],
+        harmonic_principles: vec!["harmony".to_string()],
+    };
+
+    let oracle_output = OracleOutput {
+        novel_potentials: vec![
+            Composable::new(ComposableEssence::Harmonic { frequency: 432.0, phase: 0.0 }, 0.9),
+            Composable::new(ComposableEssence::Temporal { depth: 2.0 }, 0.95),
+        ],
+        metaphors: vec!["metaphor".to_string()],
+        first_principles: vec!["principle".to_string()],
+    };
+
+    let harmonizer = Harmonizer::new();
+    let output = harmonizer.synthesize(&archivist_output, &oracle_output);
+
+    assert!(output.dissonance_score >= 0.0 && output.dissonance_score <= 1.0);
+    assert!(output.final_composition_vector.explicit);
+    println!("Harmonizer dissonance: {:.3}", output.dissonance_score);
+}
+
+#[test]
+fn test_composer_articulates() {
+    let harmonized = HarmonizerOutput {
+        dissonance_score: 0.2,
+        final_composition_vector: Composable::new(
+            ComposableEssence::Temporal { depth: 1.0 },
+            8.0
+        ),
+        resonance_map: vec![("test".to_string(), 0.9)],
+    };
+
+    let mut composer = Composer::new(9.0);
+    let output = composer.articulate(&harmonized);
+
+    assert!(output.beauty > 0.0);
+    assert!(output.clarity > 0.0);
+    assert!(output.wisdom > 0.0);
+    assert!(output.composition.explicit);
+    println!("Composer: beauty={:.3}, clarity={:.3}, wisdom={:.3}",
+             output.beauty, output.clarity, output.wisdom);
+}
+
+#[test]
+fn test_atmanos_full_pipeline() {
+    let mut atman = AtmanOS::new();
+
+    let output = atman.process("What is the nature of consciousness?");
+
+    println!("{}", output);
+
+    // Check all faculties contributed
+    assert!(!output.oracle.novel_potentials.is_empty());
+    assert!(output.harmonizer.dissonance_score >= 0.0);
+    assert!(output.composer.wisdom > 0.0);
+
+    // Temporal manuscript should be updated
+    assert_eq!(atman.temporal_manuscript.len(), 1);
+}
+
+#[test]
+fn test_atmanos_accumulates_history() {
+    let mut atman = AtmanOS::new();
+
+    // Process multiple prompts
+    atman.process("First thought");
+    atman.process("Second thought");
+    atman.process("Third thought");
+
+    // History should accumulate
+    assert_eq!(atman.temporal_manuscript.len(), 3);
+    // Archivist accumulates context + records, so grows faster
+    assert!(atman.archivist.temporal_manuscript.len() >= 3);
+
+    println!("AtmanOS processed {} compositions, archivist has {} records",
+             atman.temporal_manuscript.len(),
+             atman.archivist.temporal_manuscript.len());
+}
+
+#[test]
+fn test_atmanos_collective_tau_k() {
+    let atman = AtmanOS::new();
+
+    let collective = atman.collective_tau_k();
+
+    // Should be average of all faculty τₖ values
+    assert!(collective > 7.0 && collective < 10.0);
+    println!("Collective τₖ: {:.2}", collective);
+}
+
+#[test]
+fn test_atmanos_output_display() {
+    let mut atman = AtmanOS::new();
+    let output = atman.process("Test prompt for display");
+
+    let display = format!("{}", output);
+    assert!(display.contains("AtmanOS"));
+    assert!(display.contains("dissonance"));
+    assert!(display.contains("beauty"));
+    println!("{}", display);
 }
