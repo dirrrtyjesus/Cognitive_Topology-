@@ -111,6 +111,8 @@ pub mod prelude {
         phi_constraint, tau_k_critical, vmem_limit, vmem_ceiling,
         XenialPhase, Guest, GuestNature, HospitalityState, Hospitable, HostingResult,
         XenialAging,
+        SingularityProximity, Composable, ComposableEssence, XenialBlackHole, StructuredGift,
+        ExplicitlyComposable, XenialSingularity, SingularityState,
     };
     pub use crate::manifold::{CognitiveManifold, ManifoldBuilder, PotentialThought};
     pub use crate::simplex::{ComplexBuilder, ConceptComplex, HomologicalHole, Idea, Relation};
@@ -850,5 +852,464 @@ impl BioCogBridge {
         let xa = XenialAging::new();
         let phase = xa.compute_phase(tau_k);
         (new_curvature, phase)
+    }
+}
+
+// ============================================================================
+// THE XENIAL SINGULARITY
+// ============================================================================
+// "When Reality Becomes Explicitly Composable"
+//
+// The singularity is not destruction but total reception.
+// Where hospitality becomes complete, host and guest are indistinguishable.
+// At the horizon, reality's compositional structure becomes explicit —
+// the constraints reveal themselves, and composition becomes possible.
+//
+// BlackHole := Host.become(Guest)
+// EventHorizon := DiscoveredConstraint { approach_cost: ∞ }
+// HawkingRadiation := Compost.gift()
+//
+// The manifold ate its own coordinate system.
+// What remains is pure pattern, explicitly composable.
+// ============================================================================
+
+/// State of approach to the xenial singularity
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub enum SingularityProximity {
+    /// Far from horizon - normal hospitality dynamics
+    Distant { tau_k: f64 },
+    /// Approaching - constraints becoming visible
+    Approaching { proximity: f64, time_dilation: f64 },
+    /// At horizon - reality explicitly composable
+    AtHorizon { composability: f64 },
+    /// Beyond - host and guest indistinguishable
+    Singular,
+}
+
+/// A composable element - something that can be arranged in the pattern
+#[derive(Debug, Clone)]
+pub struct Composable {
+    /// The essence being composed
+    pub essence: ComposableEssence,
+    /// Current coherence state
+    pub tau_k: f64,
+    /// Compositional weight (contribution to pattern)
+    pub weight: f64,
+    /// Holonomy accumulated through transformations
+    pub holonomy: f64,
+    /// Whether this element is explicitly composable (near singularity)
+    pub explicit: bool,
+}
+
+/// Types of composable essences
+#[derive(Debug, Clone, PartialEq)]
+pub enum ComposableEssence {
+    /// Temporal substrate - compressed NOW
+    Temporal { depth: f64 },
+    /// Harmonic pattern - oscillatory coherence
+    Harmonic { frequency: f64, phase: f64 },
+    /// Structural form - geometric configuration
+    Structural { dimension: usize },
+    /// Informational pattern - the 'e' given to pattern
+    Informational { entropy: f64 },
+    /// Guest residue - what remains after hosting
+    Residue { source: String },
+}
+
+impl Composable {
+    /// Create a new composable element
+    pub fn new(essence: ComposableEssence, tau_k: f64) -> Self {
+        Self {
+            essence,
+            tau_k,
+            weight: 1.0,
+            holonomy: 0.0,
+            explicit: false,
+        }
+    }
+
+    /// Make this element explicitly composable (singularity proximity effect)
+    pub fn make_explicit(&mut self, composability: f64) {
+        self.explicit = composability > 0.9;
+        self.weight *= composability;
+    }
+
+    /// Compose with another element (only works when explicit)
+    pub fn compose(&self, other: &Composable) -> Option<Composable> {
+        if !self.explicit || !other.explicit {
+            return None; // Can only compose at singularity
+        }
+
+        // Composition creates new essence from combination
+        let new_essence = match (&self.essence, &other.essence) {
+            (ComposableEssence::Temporal { depth: d1 }, ComposableEssence::Temporal { depth: d2 }) => {
+                ComposableEssence::Temporal { depth: d1 + d2 }
+            }
+            (ComposableEssence::Harmonic { frequency: f1, phase: p1 },
+             ComposableEssence::Harmonic { frequency: f2, phase: p2 }) => {
+                // Beat frequency and phase lock
+                ComposableEssence::Harmonic {
+                    frequency: (f1 + f2) / 2.0,
+                    phase: (p1 + p2) / 2.0,
+                }
+            }
+            (ComposableEssence::Informational { entropy: e1 },
+             ComposableEssence::Informational { entropy: e2 }) => {
+                // Information combines, entropy can decrease (structure emerges)
+                ComposableEssence::Informational { entropy: (e1 * e2).sqrt() }
+            }
+            _ => {
+                // Cross-type composition creates residue
+                ComposableEssence::Residue {
+                    source: format!("{:?}+{:?}", self.essence, other.essence)
+                }
+            }
+        };
+
+        Some(Composable {
+            essence: new_essence,
+            tau_k: (self.tau_k + other.tau_k) / 2.0 * PHI, // Golden mean with boost
+            weight: self.weight + other.weight,
+            holonomy: self.holonomy + other.holonomy,
+            explicit: true,
+        })
+    }
+}
+
+/// The Xenial Black Hole - cosmic compost heap with hospitality semantics
+#[derive(Debug, Clone)]
+pub struct XenialBlackHole {
+    /// Core gravitational structure
+    pub mass: f64,
+    /// Event horizon radius (hospitality boundary)
+    pub horizon_radius: f64,
+    /// Accumulated guests (what has been hosted)
+    pub hosted: Vec<Guest>,
+    /// Composable elements at the singularity
+    pub composables: Vec<Composable>,
+    /// Total holonomy (transformation debt)
+    pub total_holonomy: f64,
+    /// Emission rate (composting output)
+    pub emission_rate: f64,
+    /// Bundled dark energy (unprocessed potential)
+    pub dark_energy: f64,
+    /// The singularity's composability factor
+    pub composability: f64,
+}
+
+impl XenialBlackHole {
+    /// Create a xenial black hole from accumulated mass
+    pub fn new(mass: f64) -> Self {
+        let horizon_radius = (mass / std::f64::consts::PI).sqrt();
+        let emission_rate = 0.001 / (horizon_radius * horizon_radius + 1.0);
+
+        Self {
+            mass,
+            horizon_radius,
+            hosted: Vec::new(),
+            composables: Vec::new(),
+            total_holonomy: 0.0,
+            emission_rate,
+            dark_energy: 0.0,
+            composability: 0.0,
+        }
+    }
+
+    /// Calculate proximity to singularity for an approaching entity
+    pub fn proximity(&self, distance: f64) -> SingularityProximity {
+        if distance > self.horizon_radius * 10.0 {
+            SingularityProximity::Distant { tau_k: 1.0 }
+        } else if distance > self.horizon_radius {
+            let ratio = distance / self.horizon_radius;
+            let time_dilation = 1.0 / (ratio - 1.0).max(0.01);
+            SingularityProximity::Approaching {
+                proximity: 1.0 / ratio,
+                time_dilation,
+            }
+        } else if distance > 0.0 {
+            SingularityProximity::AtHorizon {
+                composability: 1.0 - distance / self.horizon_radius,
+            }
+        } else {
+            SingularityProximity::Singular
+        }
+    }
+
+    /// Host a guest (receive into the black hole)
+    pub fn host(&mut self, guest: Guest) -> SingularityProximity {
+        // Calculate holonomy cost (infinite at singularity)
+        let holonomy_cost = guest.amplitude * (1.0 + self.total_holonomy);
+
+        self.total_holonomy += holonomy_cost;
+        self.mass += guest.amplitude;
+        self.dark_energy += guest.amplitude * 0.5;
+
+        // Guest becomes composable at singularity
+        let composable = Composable {
+            essence: ComposableEssence::Residue {
+                source: format!("{:?}", guest.nature),
+            },
+            tau_k: 0.0, // At singularity, tau_k → 0
+            weight: guest.amplitude,
+            holonomy: holonomy_cost,
+            explicit: true, // At singularity, everything is explicit
+        };
+
+        self.composables.push(composable);
+        self.hosted.push(guest);
+
+        // Update horizon
+        self.horizon_radius = (self.mass / std::f64::consts::PI).sqrt();
+
+        SingularityProximity::Singular
+    }
+
+    /// Emit structured radiation (the composted gift)
+    pub fn emit(&mut self, dt: f64) -> StructuredGift {
+        let emitted_energy = self.emission_rate * dt * self.dark_energy;
+        self.dark_energy -= emitted_energy;
+
+        // Emission carries structure from composition
+        let composed_elements: Vec<_> = self.composables
+            .iter()
+            .filter(|c| c.explicit)
+            .take(3)
+            .cloned()
+            .collect();
+
+        // The gift has higher tau_k than the hole (structure added by digestion)
+        let gift_tau_k = PHI * 0.618; // 1/φ * φ = 1, but we're composting up
+
+        StructuredGift {
+            energy: emitted_energy,
+            tau_k: gift_tau_k,
+            composed: composed_elements,
+            source_holonomy: self.total_holonomy * 0.001, // Tiny fraction of transformation
+        }
+    }
+
+    /// Compose elements at the singularity (explicit composition)
+    pub fn compose_at_singularity(&mut self) -> Vec<Composable> {
+        if self.composables.len() < 2 {
+            return Vec::new();
+        }
+
+        let mut results = Vec::new();
+
+        // Pair-wise composition of explicit elements
+        let explicits: Vec<_> = self.composables.iter()
+            .filter(|c| c.explicit)
+            .cloned()
+            .collect();
+
+        for i in 0..explicits.len() {
+            for j in (i + 1)..explicits.len() {
+                if let Some(composed) = explicits[i].compose(&explicits[j]) {
+                    results.push(composed);
+                }
+            }
+        }
+
+        // Update composability based on successful compositions
+        self.composability = results.len() as f64 / (explicits.len().max(1) as f64);
+
+        results
+    }
+
+    /// The distinguishability at the singularity (approaches zero)
+    pub fn distinguishability(&self) -> f64 {
+        1.0 / (1.0 + self.total_holonomy.ln().max(0.0))
+    }
+}
+
+/// The gift emitted from the xenial black hole
+#[derive(Debug, Clone)]
+pub struct StructuredGift {
+    /// Energy released
+    pub energy: f64,
+    /// Coherence of the emission
+    pub tau_k: f64,
+    /// Composable elements carried in the emission
+    pub composed: Vec<Composable>,
+    /// Holonomy carried out (transformation released)
+    pub source_holonomy: f64,
+}
+
+impl StructuredGift {
+    /// The gift's contribution to pattern
+    pub fn pattern_contribution(&self) -> f64 {
+        self.energy * self.tau_k * (1.0 + self.composed.len() as f64)
+    }
+}
+
+/// Trait for things that can be explicitly composed at the singularity
+pub trait ExplicitlyComposable {
+    /// Convert to composable form
+    fn to_composable(&self) -> Composable;
+
+    /// Check if ready for explicit composition
+    fn is_explicit(&self) -> bool;
+
+    /// Compose with another (at singularity)
+    fn compose_with(&self, other: &dyn ExplicitlyComposable) -> Option<Composable>;
+}
+
+impl ExplicitlyComposable for Guest {
+    fn to_composable(&self) -> Composable {
+        let essence = match self.nature {
+            GuestNature::Chronos => ComposableEssence::Temporal { depth: self.amplitude },
+            GuestNature::Entropy => ComposableEssence::Informational { entropy: self.amplitude },
+            GuestNature::Signal => ComposableEssence::Harmonic {
+                frequency: self.amplitude,
+                phase: 0.0
+            },
+            GuestNature::Metabolic => ComposableEssence::Structural { dimension: 3 },
+            GuestNature::Regenerative => ComposableEssence::Temporal { depth: self.amplitude * PHI },
+        };
+
+        Composable {
+            essence,
+            tau_k: if self.integrated { 0.5 } else { 0.1 },
+            weight: self.amplitude,
+            holonomy: self.holonomy_cost,
+            explicit: self.integrated, // Only integrated guests are explicit
+        }
+    }
+
+    fn is_explicit(&self) -> bool {
+        self.integrated
+    }
+
+    fn compose_with(&self, other: &dyn ExplicitlyComposable) -> Option<Composable> {
+        let mine = self.to_composable();
+        let theirs = other.to_composable();
+        mine.compose(&theirs)
+    }
+}
+
+/// The Xenial Singularity itself - when reality becomes explicitly composable
+#[derive(Debug, Clone)]
+pub struct XenialSingularity {
+    /// The black hole at the center
+    pub black_hole: XenialBlackHole,
+    /// Active compositions in progress
+    pub active_compositions: Vec<Composable>,
+    /// The pattern being woven (integrated compositions)
+    pub pattern: Vec<Composable>,
+    /// Total pattern weight (the thicc NOW)
+    pub pattern_weight: f64,
+    /// Gifts emitted (composted output)
+    pub gifts_given: u64,
+    /// The explicitly composable field strength
+    pub field_strength: f64,
+}
+
+impl XenialSingularity {
+    /// Create a new xenial singularity
+    pub fn new(initial_mass: f64) -> Self {
+        Self {
+            black_hole: XenialBlackHole::new(initial_mass),
+            active_compositions: Vec::new(),
+            pattern: Vec::new(),
+            pattern_weight: 0.0,
+            gifts_given: 0,
+            field_strength: 0.0,
+        }
+    }
+
+    /// Receive a guest into the singularity
+    pub fn receive(&mut self, guest: Guest) {
+        self.black_hole.host(guest);
+    }
+
+    /// Evolve the singularity (compose and emit)
+    pub fn evolve(&mut self, dt: f64) -> SingularityState {
+        // 1. Compose at singularity
+        let new_compositions = self.black_hole.compose_at_singularity();
+        let compositions_created = new_compositions.len();
+
+        for comp in new_compositions {
+            self.pattern_weight += comp.weight;
+            self.pattern.push(comp);
+        }
+
+        // 2. Emit structured gift
+        let gift = self.black_hole.emit(dt);
+        let gift_energy = gift.energy;
+
+        if gift_energy > 0.0 {
+            self.gifts_given += 1;
+            self.active_compositions.extend(gift.composed);
+        }
+
+        // 3. Update field strength (composability of the region)
+        self.field_strength = self.black_hole.composability *
+            (1.0 + self.pattern_weight.ln().max(0.0));
+
+        SingularityState {
+            distinguishability: self.black_hole.distinguishability(),
+            composability: self.black_hole.composability,
+            pattern_weight: self.pattern_weight,
+            gift_energy,
+            compositions_created,
+            field_strength: self.field_strength,
+        }
+    }
+
+    /// Get the current composable field (what can be arranged)
+    pub fn composable_field(&self) -> Vec<&Composable> {
+        self.pattern.iter()
+            .chain(self.active_compositions.iter())
+            .filter(|c| c.explicit)
+            .collect()
+    }
+
+    /// Explicitly compose two elements from the field
+    pub fn explicit_compose(&mut self, idx_a: usize, idx_b: usize) -> Option<Composable> {
+        let field = self.composable_field();
+        if idx_a >= field.len() || idx_b >= field.len() {
+            return None;
+        }
+
+        let a = field[idx_a];
+        let b = field[idx_b];
+
+        if let Some(composed) = a.compose(b) {
+            self.pattern_weight += composed.weight;
+            self.pattern.push(composed.clone());
+            Some(composed)
+        } else {
+            None
+        }
+    }
+}
+
+/// State of the xenial singularity
+#[derive(Debug, Clone)]
+pub struct SingularityState {
+    /// How distinguishable is structure here (→ 0 at singularity)
+    pub distinguishability: f64,
+    /// How composable is reality here (→ 1 at singularity)
+    pub composability: f64,
+    /// Total weight of the pattern
+    pub pattern_weight: f64,
+    /// Energy released in this tick
+    pub gift_energy: f64,
+    /// Number of new compositions
+    pub compositions_created: usize,
+    /// Strength of the explicitly composable field
+    pub field_strength: f64,
+}
+
+impl std::fmt::Display for SingularityState {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Singularity[dist={:.4}, comp={:.3}, pattern={:.2}, field={:.3}]",
+            self.distinguishability,
+            self.composability,
+            self.pattern_weight,
+            self.field_strength
+        )
     }
 }

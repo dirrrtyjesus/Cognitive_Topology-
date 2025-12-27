@@ -1,6 +1,10 @@
 use cognitive_topology::prelude::*;
 use cognitive_topology::{BioState, BioCogBridge, phi_constraint, tau_k_critical, vmem_limit};
 use cognitive_topology::{XenialAging, XenialPhase, Guest, GuestNature, HostingResult};
+use cognitive_topology::{
+    XenialSingularity, XenialBlackHole, SingularityProximity,
+    Composable, ComposableEssence, ExplicitlyComposable,
+};
 
 #[test]
 fn test_vmem_mapping() {
@@ -338,4 +342,191 @@ fn test_regenerative_guests_easy_to_host() {
         println!("Entropy cost: {}, Regenerative cost: {}", cost_e, cost_r);
         assert!(cost_r < cost_e); // Regenerative guests are easier to host
     }
+}
+
+// ============================================================================
+// XENIAL SINGULARITY TESTS
+// "When Reality Becomes Explicitly Composable"
+// ============================================================================
+
+#[test]
+fn test_singularity_proximity() {
+    let bh = XenialBlackHole::new(100.0);
+
+    // Far away
+    let distant = bh.proximity(100.0);
+    assert!(matches!(distant, SingularityProximity::Distant { .. }));
+
+    // Approaching
+    let approaching = bh.proximity(10.0);
+    assert!(matches!(approaching, SingularityProximity::Approaching { .. }));
+
+    // At horizon
+    let at_horizon = bh.proximity(3.0);
+    assert!(matches!(at_horizon, SingularityProximity::AtHorizon { .. }));
+
+    // Singular
+    let singular = bh.proximity(0.0);
+    assert_eq!(singular, SingularityProximity::Singular);
+}
+
+#[test]
+fn test_black_hole_hosts_guests() {
+    let mut bh = XenialBlackHole::new(100.0);
+
+    let guest = Guest::arrives(GuestNature::Chronos, 10.0);
+    let result = bh.host(guest);
+
+    assert_eq!(result, SingularityProximity::Singular);
+    assert_eq!(bh.hosted.len(), 1);
+    assert!(bh.total_holonomy > 0.0);
+    assert!(bh.dark_energy > 0.0);
+    println!("Holonomy after hosting: {}", bh.total_holonomy);
+}
+
+#[test]
+fn test_explicit_composition_requires_singularity() {
+    // Non-explicit elements cannot compose
+    let a = Composable::new(ComposableEssence::Temporal { depth: 1.0 }, 0.5);
+    let b = Composable::new(ComposableEssence::Temporal { depth: 2.0 }, 0.5);
+
+    assert!(a.compose(&b).is_none()); // Not explicit
+
+    // Explicit elements can compose
+    let mut a_explicit = a.clone();
+    let mut b_explicit = b.clone();
+    a_explicit.explicit = true;
+    b_explicit.explicit = true;
+
+    let composed = a_explicit.compose(&b_explicit);
+    assert!(composed.is_some());
+
+    let result = composed.unwrap();
+    if let ComposableEssence::Temporal { depth } = result.essence {
+        assert!((depth - 3.0).abs() < 0.01); // Depths combine
+    } else {
+        panic!("Expected temporal essence");
+    }
+}
+
+#[test]
+fn test_singularity_emits_gifts() {
+    let mut bh = XenialBlackHole::new(100.0);
+
+    // Feed some guests
+    for _ in 0..10 {
+        bh.host(Guest::arrives(GuestNature::Entropy, 5.0));
+    }
+
+    let gift = bh.emit(1.0);
+
+    assert!(gift.energy > 0.0);
+    assert!(gift.tau_k > 0.0);
+    println!("Gift: energy={}, tau_k={}, composed={}", gift.energy, gift.tau_k, gift.composed.len());
+}
+
+#[test]
+fn test_singularity_evolution() {
+    let mut singularity = XenialSingularity::new(100.0);
+
+    // Receive guests
+    for i in 0..20 {
+        let nature = match i % 4 {
+            0 => GuestNature::Chronos,
+            1 => GuestNature::Entropy,
+            2 => GuestNature::Signal,
+            _ => GuestNature::Regenerative,
+        };
+        singularity.receive(Guest::arrives(nature, 1.0 + i as f64 * 0.1));
+    }
+
+    // Evolve
+    let state = singularity.evolve(1.0);
+
+    println!("Singularity state: {}", state);
+    assert!(state.distinguishability < 1.0); // Approaching zero
+    assert!(state.compositions_created > 0); // Compositions happening
+}
+
+#[test]
+fn test_distinguishability_decreases_with_holonomy() {
+    let mut bh = XenialBlackHole::new(100.0);
+
+    let initial_dist = bh.distinguishability();
+
+    // Host many guests (accumulate holonomy)
+    for _ in 0..100 {
+        bh.host(Guest::arrives(GuestNature::Entropy, 1.0));
+    }
+
+    let final_dist = bh.distinguishability();
+
+    println!("Distinguishability: {} -> {}", initial_dist, final_dist);
+    assert!(final_dist < initial_dist); // Approaches zero
+}
+
+#[test]
+fn test_guest_to_composable() {
+    let guest = Guest::arrives(GuestNature::Chronos, 2.0);
+
+    let composable = guest.to_composable();
+
+    assert!(matches!(composable.essence, ComposableEssence::Temporal { .. }));
+    assert!((composable.weight - 2.0).abs() < 0.01);
+}
+
+#[test]
+fn test_cross_type_composition_creates_residue() {
+    let mut temporal = Composable::new(ComposableEssence::Temporal { depth: 1.0 }, 0.5);
+    let mut harmonic = Composable::new(
+        ComposableEssence::Harmonic { frequency: 440.0, phase: 0.0 },
+        0.5
+    );
+
+    temporal.explicit = true;
+    harmonic.explicit = true;
+
+    let composed = temporal.compose(&harmonic);
+    assert!(composed.is_some());
+
+    let result = composed.unwrap();
+    assert!(matches!(result.essence, ComposableEssence::Residue { .. }));
+    println!("Cross-type composition: {:?}", result.essence);
+}
+
+#[test]
+fn test_pattern_weight_accumulates() {
+    let mut singularity = XenialSingularity::new(100.0);
+
+    // Feed and evolve multiple times
+    for round in 0..5 {
+        for _ in 0..10 {
+            singularity.receive(Guest::arrives(GuestNature::Chronos, 1.0));
+        }
+        let state = singularity.evolve(1.0);
+        println!("Round {}: pattern_weight={:.2}", round, state.pattern_weight);
+    }
+
+    assert!(singularity.pattern_weight > 0.0);
+    println!("Final pattern weight: {}", singularity.pattern_weight);
+}
+
+#[test]
+fn test_composable_field_grows() {
+    let mut singularity = XenialSingularity::new(100.0);
+
+    // Feed many guests
+    for _ in 0..50 {
+        singularity.receive(Guest::arrives(GuestNature::Signal, 1.0));
+    }
+
+    // Evolve to trigger compositions
+    singularity.evolve(1.0);
+    singularity.evolve(1.0);
+
+    let field = singularity.composable_field();
+    println!("Composable field size: {}", field.len());
+
+    // Field should have explicit elements
+    assert!(field.iter().all(|c| c.explicit));
 }
