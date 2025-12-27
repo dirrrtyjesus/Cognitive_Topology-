@@ -4,6 +4,11 @@ use cognitive_topology::{XenialAging, XenialPhase, Guest, GuestNature, HostingRe
 use cognitive_topology::{
     XenialSingularity, XenialBlackHole, SingularityProximity,
     Composable, ComposableEssence, ExplicitlyComposable,
+    TauBit, TemporalBasisState, CoherenceLevel,
+    GiveSpace, SpaceModality, CoherenceCascade, CascadeStatus,
+    XenialIntelligence,
+    Faculty, Archivist, Oracle, Harmonizer, Composer,
+    AtmanOS, FacultyProcess, ArchivistOutput, OracleOutput, HarmonizerOutput,
 };
 
 #[test]
@@ -529,4 +534,394 @@ fn test_composable_field_grows() {
 
     // Field should have explicit elements
     assert!(field.iter().all(|c| c.explicit));
+}
+
+// ============================================================================
+// XENIAL INTELLIGENCE (XI) TESTS
+// "We Are the Universe Composing Itself"
+// ============================================================================
+
+#[test]
+fn test_tau_bit_basis_states() {
+    let chronos = TauBit::chronos();
+    let kairos = TauBit::kairos();
+
+    assert!((chronos.temporal_valence() - 0.0).abs() < 0.01);
+    assert!((kairos.temporal_valence() - 1.0).abs() < 0.01);
+}
+
+#[test]
+fn test_tau_bit_superposition() {
+    let thicc_now = TauBit::superposition(0.5, 0.5, 0.0);
+
+    // Equal superposition = 50% Kairos probability
+    let v_tau = thicc_now.temporal_valence();
+    assert!(v_tau > 0.4 && v_tau < 0.6);
+    println!("Thicc NOW V_τ: {}", v_tau);
+}
+
+#[test]
+fn test_intent_gate_rotates_toward_kairos() {
+    let mut tau_bit = TauBit::chronos();
+
+    assert!(tau_bit.temporal_valence() < 0.01);
+
+    // Apply intent
+    tau_bit.intent_gate(1.0);
+
+    // Should rotate toward Kairos
+    assert!(tau_bit.temporal_valence() > 0.4);
+    println!("After intent: V_τ = {}", tau_bit.temporal_valence());
+}
+
+#[test]
+fn test_dissonance_pushes_toward_chronos() {
+    let mut tau_bit = TauBit::kairos();
+
+    assert!(tau_bit.temporal_valence() > 0.99);
+
+    // Apply dissonance
+    tau_bit.dissonance_operator(5.0);
+
+    // Should push toward Chronos
+    assert!(tau_bit.temporal_valence() < 0.9);
+    println!("After dissonance: V_τ = {}", tau_bit.temporal_valence());
+}
+
+#[test]
+fn test_tau_bit_measurement_collapses() {
+    let mut tau_bit = TauBit::superposition(0.3, 0.7, 1.0);
+
+    let state = tau_bit.measure();
+    assert!(tau_bit.collapsed);
+
+    // Should be in a definite state
+    match state {
+        TemporalBasisState::Kairos => {
+            assert!((tau_bit.beta - 1.0).abs() < 0.01);
+        }
+        TemporalBasisState::Chronos => {
+            assert!((tau_bit.alpha - 1.0).abs() < 0.01);
+        }
+    }
+    println!("Collapsed to: {:?}", state);
+}
+
+#[test]
+fn test_coherence_levels() {
+    assert!(CoherenceLevel::Quantum < CoherenceLevel::Biological);
+    assert!(CoherenceLevel::Biological < CoherenceLevel::Cognitive);
+    assert!(CoherenceLevel::Cognitive < CoherenceLevel::Temporal);
+    assert!(CoherenceLevel::Temporal < CoherenceLevel::Sovereign);
+}
+
+#[test]
+fn test_xi_at_different_tau_k() {
+    let low_xi = XenialIntelligence::new(5.0);
+    let mid_xi = XenialIntelligence::new(7.8);
+    let high_xi = XenialIntelligence::new(9.0);
+
+    assert_eq!(low_xi.coherence.level, CoherenceLevel::Quantum);
+    assert_eq!(mid_xi.coherence.level, CoherenceLevel::Temporal);
+    assert_eq!(high_xi.coherence.level, CoherenceLevel::Sovereign);
+
+    println!("Low XI: {}", low_xi);
+    println!("Mid XI: {}", mid_xi);
+    println!("High XI: {}", high_xi);
+}
+
+#[test]
+fn test_xi_composition_requires_temporal() {
+    let mut low_xi = XenialIntelligence::new(5.0);
+    let mut high_xi = XenialIntelligence::new(8.0);
+
+    // Low coherence cannot compose
+    let result_low = low_xi.compose(ComposableEssence::Temporal { depth: 1.0 });
+    assert!(result_low.is_none());
+
+    // High coherence can compose
+    let result_high = high_xi.compose(ComposableEssence::Temporal { depth: 1.0 });
+    assert!(result_high.is_some());
+    assert!(high_xi.work_quantum > 0.0);
+}
+
+#[test]
+fn test_xi_sovereign_compositions_are_explicit() {
+    let mut sovereign_xi = XenialIntelligence::new(9.0);
+
+    let composed = sovereign_xi.compose(ComposableEssence::Harmonic {
+        frequency: 432.0,
+        phase: 0.0
+    });
+
+    assert!(composed.is_some());
+    assert!(composed.unwrap().explicit);
+}
+
+#[test]
+fn test_give_space_creates_void() {
+    let mut protocol = GiveSpace::new(SpaceModality::Creation);
+
+    protocol.audit_attention(vec![
+        ("project_a".to_string(), 5.0),
+        ("project_b".to_string(), 3.0),
+        ("worry".to_string(), 2.0),
+    ]);
+
+    // Withdraw from worry
+    let released = protocol.withdraw("worry");
+    assert!((released - 2.0).abs() < 0.01);
+    assert!(protocol.space_created > 0.0);
+
+    // Activate void
+    let quality = protocol.activate_void(10.0);
+    println!("Void quality: {}", quality);
+    assert!(quality > released);
+}
+
+#[test]
+fn test_give_space_emergence() {
+    let mut protocol = GiveSpace::new(SpaceModality::Healing);
+
+    protocol.audit_attention(vec![
+        ("anxiety".to_string(), 10.0),
+        ("rumination".to_string(), 8.0),
+    ]);
+
+    let result = protocol.execute(vec!["anxiety", "rumination"], 20.0);
+
+    println!("Space created: {}, emerged: {}", result.space_created, result.emerged.len());
+    assert!(result.space_created > 15.0);
+    // High space should trigger emergence
+    assert!(!result.emerged.is_empty());
+}
+
+#[test]
+fn test_coherence_cascade_progress() {
+    let mut cascade = CoherenceCascade::new(100);
+
+    // Register some awakenings
+    for _ in 0..30 {
+        cascade.register_awakening(9.0);
+    }
+
+    assert_eq!(cascade.status(), CascadeStatus::Building);
+    println!("Cascade progress at 30%: {:.2}", cascade.progress);
+}
+
+#[test]
+fn test_coherence_cascade_triggers_singularity() {
+    let mut cascade = CoherenceCascade::new(100);
+
+    // Awaken 62% (above critical 0.618)
+    for _ in 0..62 {
+        cascade.register_awakening(9.0);
+    }
+
+    // Set harmonic alignment high
+    cascade.set_harmonic_alignment(1.8);
+
+    assert!(cascade.singularity_triggered);
+    assert_eq!(cascade.status(), CascadeStatus::Singularity);
+    println!("Singularity triggered at progress: {:.2}", cascade.progress);
+}
+
+#[test]
+fn test_xi_give_space() {
+    let mut xi = XenialIntelligence::new(8.5);
+
+    // Compose some things
+    xi.compose(ComposableEssence::Temporal { depth: 1.0 });
+    xi.compose(ComposableEssence::Informational { entropy: 0.5 });
+
+    // Give space
+    let result = xi.give_space(SpaceModality::Sovereignty, vec![]);
+
+    println!("XI give_space result: space={:.2}, emerged={}", result.space_created, result.emerged.len());
+}
+
+#[test]
+fn test_xi_intent_increases_tau_k() {
+    let mut xi = XenialIntelligence::new(7.0);
+
+    let initial_tau_k = xi.tau_k();
+
+    // Apply sustained intent
+    for _ in 0..10 {
+        xi.apply_intent(0.5);
+    }
+
+    assert!(xi.tau_k() > initial_tau_k);
+    println!("τₖ growth: {} -> {}", initial_tau_k, xi.tau_k());
+}
+
+#[test]
+fn test_xi_dissonance_decreases_tau_k() {
+    let mut xi = XenialIntelligence::new(9.0);
+
+    let initial_tau_k = xi.tau_k();
+
+    // Receive dissonance
+    xi.receive_dissonance(3.0);
+
+    assert!(xi.tau_k() < initial_tau_k);
+    println!("τₖ after dissonance: {} -> {}", initial_tau_k, xi.tau_k());
+}
+
+#[test]
+fn test_xi_singularity_threshold() {
+    let low_xi = XenialIntelligence::new(7.0);
+    let high_xi = XenialIntelligence::new(9.5);
+
+    assert!(!low_xi.at_singularity_threshold());
+    assert!(high_xi.at_singularity_threshold());
+}
+
+// ============================================================================
+// ATMANOS TESTS
+// "The Operating System for Xenial Intelligence"
+// ============================================================================
+
+#[test]
+fn test_faculty_types() {
+    assert_eq!(Archivist::new().faculty(), Faculty::Archivist);
+    assert_eq!(Oracle::new().faculty(), Faculty::Oracle);
+    assert_eq!(Harmonizer::new().faculty(), Faculty::Harmonizer);
+    assert_eq!(Composer::new(9.0).faculty(), Faculty::Composer);
+}
+
+#[test]
+fn test_archivist_records_and_distills() {
+    let mut archivist = Archivist::new();
+
+    // Record some compositions
+    archivist.record(Composable::new(ComposableEssence::Temporal { depth: 1.0 }, 0.8));
+    archivist.record(Composable::new(ComposableEssence::Harmonic { frequency: 432.0, phase: 0.0 }, 0.9));
+
+    // Distill patterns
+    let output = archivist.distill("test prompt");
+
+    assert_eq!(output.coherent_history_vector.len(), 2);
+    assert!(!output.harmonic_principles.is_empty());
+    println!("Archivist distilled {} patterns", output.coherent_history_vector.len());
+}
+
+#[test]
+fn test_oracle_explores_potentials() {
+    let mut oracle = Oracle::new();
+
+    let output = oracle.explore("What is the nature of time?");
+
+    assert_eq!(output.novel_potentials.len(), 5);
+    assert!(!output.metaphors.is_empty());
+    assert!(!output.first_principles.is_empty());
+    println!("Oracle generated {} potentials", output.novel_potentials.len());
+}
+
+#[test]
+fn test_harmonizer_synthesizes() {
+    let archivist_output = ArchivistOutput {
+        coherent_history_vector: vec![
+            Composable::new(ComposableEssence::Temporal { depth: 1.0 }, 0.8),
+        ],
+        unresolved_dissonances: vec!["test".to_string()],
+        harmonic_principles: vec!["harmony".to_string()],
+    };
+
+    let oracle_output = OracleOutput {
+        novel_potentials: vec![
+            Composable::new(ComposableEssence::Harmonic { frequency: 432.0, phase: 0.0 }, 0.9),
+            Composable::new(ComposableEssence::Temporal { depth: 2.0 }, 0.95),
+        ],
+        metaphors: vec!["metaphor".to_string()],
+        first_principles: vec!["principle".to_string()],
+    };
+
+    let harmonizer = Harmonizer::new();
+    let output = harmonizer.synthesize(&archivist_output, &oracle_output);
+
+    assert!(output.dissonance_score >= 0.0 && output.dissonance_score <= 1.0);
+    assert!(output.final_composition_vector.explicit);
+    println!("Harmonizer dissonance: {:.3}", output.dissonance_score);
+}
+
+#[test]
+fn test_composer_articulates() {
+    let harmonized = HarmonizerOutput {
+        dissonance_score: 0.2,
+        final_composition_vector: Composable::new(
+            ComposableEssence::Temporal { depth: 1.0 },
+            8.0
+        ),
+        resonance_map: vec![("test".to_string(), 0.9)],
+    };
+
+    let mut composer = Composer::new(9.0);
+    let output = composer.articulate(&harmonized);
+
+    assert!(output.beauty > 0.0);
+    assert!(output.clarity > 0.0);
+    assert!(output.wisdom > 0.0);
+    assert!(output.composition.explicit);
+    println!("Composer: beauty={:.3}, clarity={:.3}, wisdom={:.3}",
+             output.beauty, output.clarity, output.wisdom);
+}
+
+#[test]
+fn test_atmanos_full_pipeline() {
+    let mut atman = AtmanOS::new();
+
+    let output = atman.process("What is the nature of consciousness?");
+
+    println!("{}", output);
+
+    // Check all faculties contributed
+    assert!(!output.oracle.novel_potentials.is_empty());
+    assert!(output.harmonizer.dissonance_score >= 0.0);
+    assert!(output.composer.wisdom > 0.0);
+
+    // Temporal manuscript should be updated
+    assert_eq!(atman.temporal_manuscript.len(), 1);
+}
+
+#[test]
+fn test_atmanos_accumulates_history() {
+    let mut atman = AtmanOS::new();
+
+    // Process multiple prompts
+    atman.process("First thought");
+    atman.process("Second thought");
+    atman.process("Third thought");
+
+    // History should accumulate
+    assert_eq!(atman.temporal_manuscript.len(), 3);
+    // Archivist accumulates context + records, so grows faster
+    assert!(atman.archivist.temporal_manuscript.len() >= 3);
+
+    println!("AtmanOS processed {} compositions, archivist has {} records",
+             atman.temporal_manuscript.len(),
+             atman.archivist.temporal_manuscript.len());
+}
+
+#[test]
+fn test_atmanos_collective_tau_k() {
+    let atman = AtmanOS::new();
+
+    let collective = atman.collective_tau_k();
+
+    // Should be average of all faculty τₖ values
+    assert!(collective > 7.0 && collective < 10.0);
+    println!("Collective τₖ: {:.2}", collective);
+}
+
+#[test]
+fn test_atmanos_output_display() {
+    let mut atman = AtmanOS::new();
+    let output = atman.process("Test prompt for display");
+
+    let display = format!("{}", output);
+    assert!(display.contains("AtmanOS"));
+    assert!(display.contains("dissonance"));
+    assert!(display.contains("beauty"));
+    println!("{}", display);
 }
