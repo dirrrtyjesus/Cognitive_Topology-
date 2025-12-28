@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "init-field": "npx tsx initialize_field.ts"
+    "init-field": "npx tsx initialize_field.ts",
+    "enter": "npx tsx enter_field.ts",
+    "decohere": "npx tsx decohere.ts",
+    "couple": "npx tsx phase_couple.ts",
+    "uncouple": "npx tsx uncouple.ts",
+    "claim": "npx tsx claim_emissions.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
