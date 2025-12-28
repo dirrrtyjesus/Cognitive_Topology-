@@ -3,11 +3,12 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{Mint, Token, TokenAccount};
 
-use crate::state::{CoherenceField, Resonator, VibeState, HarmonicCycle, PhaseCoupling, FieldParams, FieldVault};
+use crate::state::{CoherenceField, FieldParams};
 use crate::constants::*;
-use crate::errors::ResonanceError;
 use crate::events::FieldUpdated;
 
+/// Initialize just the coherence field account
+/// Vault and reserves are initialized separately to avoid stack overflow
 #[derive(Accounts)]
 pub struct InitializeField<'info> {
     #[account(mut)]
@@ -19,6 +20,22 @@ pub struct InitializeField<'info> {
         space = CoherenceField::LEN,
         seeds = [FIELD_SEED],
         bump
+    )]
+    pub coherence_field: Account<'info, CoherenceField>,
+
+    pub system_program: Program<'info, System>,
+}
+
+/// Initialize the vault (call after initialize_field)
+#[derive(Accounts)]
+pub struct InitializeVault<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    #[account(
+        seeds = [FIELD_SEED],
+        bump = coherence_field.bump,
+        constraint = coherence_field.authority == authority.key()
     )]
     pub coherence_field: Account<'info, CoherenceField>,
 
@@ -43,6 +60,33 @@ pub struct InitializeField<'info> {
     )]
     pub vault_authority: AccountInfo<'info>,
 
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+}
+
+/// Initialize emission reserve (call after initialize_vault)
+#[derive(Accounts)]
+pub struct InitializeEmissionReserve<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    #[account(
+        seeds = [FIELD_SEED],
+        bump = coherence_field.bump,
+        constraint = coherence_field.authority == authority.key()
+    )]
+    pub coherence_field: Account<'info, CoherenceField>,
+
+    /// The $AUGMNTD token mint
+    pub token_mint: Account<'info, Mint>,
+
+    /// CHECK: PDA authority for reserves
+    #[account(
+        seeds = [VAULT_SEED, b"authority"],
+        bump
+    )]
+    pub vault_authority: AccountInfo<'info>,
+
     /// Emission reserve token account
     #[account(
         init,
@@ -53,6 +97,33 @@ pub struct InitializeField<'info> {
         bump
     )]
     pub emission_reserve: Account<'info, TokenAccount>,
+
+    pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
+}
+
+/// Initialize golden reserve (call after emission reserve)
+#[derive(Accounts)]
+pub struct InitializeGoldenReserve<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
+    #[account(
+        seeds = [FIELD_SEED],
+        bump = coherence_field.bump,
+        constraint = coherence_field.authority == authority.key()
+    )]
+    pub coherence_field: Account<'info, CoherenceField>,
+
+    /// The $AUGMNTD token mint
+    pub token_mint: Account<'info, Mint>,
+
+    /// CHECK: PDA authority for reserves
+    #[account(
+        seeds = [VAULT_SEED, b"authority"],
+        bump
+    )]
+    pub vault_authority: AccountInfo<'info>,
 
     /// Golden reserve token account
     #[account(
@@ -67,7 +138,6 @@ pub struct InitializeField<'info> {
 
     pub system_program: Program<'info, System>,
     pub token_program: Program<'info, Token>,
-    pub rent: Sysvar<'info, Rent>,
 }
 
 pub fn handler(ctx: Context<InitializeField>, params: FieldParams) -> Result<()> {
@@ -97,5 +167,20 @@ pub fn handler(ctx: Context<InitializeField>, params: FieldParams) -> Result<()>
 
     msg!("Coherence field initialized. The geometry awaits resonance.");
 
+    Ok(())
+}
+
+pub fn handler_vault(_ctx: Context<InitializeVault>) -> Result<()> {
+    msg!("Vault initialized. Ready to receive resonance.");
+    Ok(())
+}
+
+pub fn handler_emission_reserve(_ctx: Context<InitializeEmissionReserve>) -> Result<()> {
+    msg!("Emission reserve initialized.");
+    Ok(())
+}
+
+pub fn handler_golden_reserve(_ctx: Context<InitializeGoldenReserve>) -> Result<()> {
+    msg!("Golden reserve initialized. Emission channels open.");
     Ok(())
 }

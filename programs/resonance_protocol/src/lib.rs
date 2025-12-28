@@ -23,12 +23,27 @@ use constants::*;
 pub mod resonance_protocol {
     use super::*;
 
-    /// Initialize the global coherence field
+    /// Initialize the global coherence field (step 1/3)
     pub fn initialize_field(
         ctx: Context<InitializeField>,
         params: FieldParams,
     ) -> Result<()> {
         instructions::initialize_field::handler(ctx, params)
+    }
+
+    /// Initialize the vault (step 2/3)
+    pub fn initialize_vault(ctx: Context<InitializeVault>) -> Result<()> {
+        instructions::initialize_field::handler_vault(ctx)
+    }
+
+    /// Initialize emission reserve (step 3/4)
+    pub fn initialize_emission_reserve(ctx: Context<InitializeEmissionReserve>) -> Result<()> {
+        instructions::initialize_field::handler_emission_reserve(ctx)
+    }
+
+    /// Initialize golden reserve (step 4/4)
+    pub fn initialize_golden_reserve(ctx: Context<InitializeGoldenReserve>) -> Result<()> {
+        instructions::initialize_field::handler_golden_reserve(ctx)
     }
 
     /// Enter the coherence field (begin resonating)
