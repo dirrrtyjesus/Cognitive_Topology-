@@ -1,0 +1,19 @@
+{
+  "name": "resonance-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "init-field": "npx tsx initialize_field.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/spl-token": "^0.3.9",
+    "@solana/web3.js": "^1.87.6",
+    "@types/bn.js": "^5.2.0",
+    "bn.js": "^5.2.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

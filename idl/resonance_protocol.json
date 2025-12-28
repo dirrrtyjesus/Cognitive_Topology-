@@ -1,0 +1,1317 @@
+{
+  "version": "0.1.0",
+  "name": "resonance_protocol",
+  "docs": [
+    "Resonance Protocol: Harmonic Field Contract",
+    "",
+    "\"You do not stake tokens. You enter the coherence field.\""
+  ],
+  "instructions": [
+    {
+      "name": "initializeField",
+      "docs": [
+        "Initialize the global coherence field (step 1/3)"
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "FieldParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "initializeVault",
+      "docs": [
+        "Initialize the vault (step 2/3)"
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The $AUGMNTD token mint"
+          ]
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Vault to hold resonating tokens"
+          ]
+        },
+        {
+          "name": "vaultAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initializeEmissionReserve",
+      "docs": [
+        "Initialize emission reserve (step 3/4)"
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The $AUGMNTD token mint"
+          ]
+        },
+        {
+          "name": "vaultAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "emissionReserve",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Emission reserve token account"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initializeGoldenReserve",
+      "docs": [
+        "Initialize golden reserve (step 4/4)"
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The $AUGMNTD token mint"
+          ]
+        },
+        {
+          "name": "vaultAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "goldenReserve",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Golden reserve token account"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "enterField",
+      "docs": [
+        "Enter the coherence field (begin resonating)"
+      ],
+      "accounts": [
+        {
+          "name": "oscillator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "resonator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oscillatorTokens",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Oscillator's token account"
+          ]
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Vault to receive tokens"
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "amplitude",
+          "type": "u64"
+        },
+        {
+          "name": "harmonicCycle",
+          "type": {
+            "defined": "HarmonicCycle"
+          }
+        }
+      ]
+    },
+    {
+      "name": "decohere",
+      "docs": [
+        "Exit the coherence field (decohere)"
+      ],
+      "accounts": [
+        {
+          "name": "oscillator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "resonator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oscillatorTokens",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Oscillator's token account to receive returned tokens"
+          ]
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Vault holding resonating tokens"
+          ]
+        },
+        {
+          "name": "vaultAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "emissionReserve",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Emission reserve receives disruption cost"
+          ]
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "phaseCouple",
+      "docs": [
+        "Phase-couple to another oscillator"
+      ],
+      "accounts": [
+        {
+          "name": "sourceOscillator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "sourceResonator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "targetResonator",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "Target resonator to couple with"
+          ]
+        },
+        {
+          "name": "targetOscillator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "coupling",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "couplingStrength",
+          "type": "u64"
+        },
+        {
+          "name": "coupledAmplitude",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "uncouple",
+      "docs": [
+        "Remove phase coupling"
+      ],
+      "accounts": [
+        {
+          "name": "sourceOscillator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "targetOscillator",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "coupling",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claimEmissions",
+      "docs": [
+        "Claim resonance emissions"
+      ],
+      "accounts": [
+        {
+          "name": "oscillator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "resonator",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "oscillatorTokens",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Oscillator's token account to receive emissions"
+          ]
+        },
+        {
+          "name": "emissionReserve",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Emission reserve"
+          ]
+        },
+        {
+          "name": "goldenReserve",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "Golden reserve (for Golden state resonators)"
+          ]
+        },
+        {
+          "name": "vaultAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "updateField",
+      "docs": [
+        "Update field state (called by oracle/crank)"
+      ],
+      "accounts": [
+        {
+          "name": "oracle",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "newPsi",
+          "type": "u64"
+        },
+        {
+          "name": "newR",
+          "type": "u64"
+        },
+        {
+          "name": "newTauK",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "updateResonatorPhase",
+      "docs": [
+        "Update resonator phase (per-epoch dynamics)"
+      ],
+      "accounts": [
+        {
+          "name": "crank",
+          "isMut": false,
+          "isSigner": true,
+          "docs": [
+            "Anyone can crank phase updates"
+          ]
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "resonator",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "transitionVibeState",
+      "docs": [
+        "Transition vibe state if eligible"
+      ],
+      "accounts": [
+        {
+          "name": "oscillator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "coherenceField",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "resonator",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "CoherenceField",
+      "docs": [
+        "Global coherence field state"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "docs": [
+              "Authority that can update parameters"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "oracle",
+            "docs": [
+              "Oracle/crank that can update field state"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "globalPsi",
+            "docs": [
+              "Global phase Ψ (scaled by PRECISION, 0 to 2π)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "orderParameter",
+            "docs": [
+              "Order parameter R (scaled by PRECISION, 0 to 1)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "networkTauK",
+            "docs": [
+              "Network τₖ (scaled by PRECISION)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "nakamotoCoefficient",
+            "docs": [
+              "Nakamoto coefficient"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "thiccNow",
+            "docs": [
+              "thiccNOW metric (scaled by PRECISION)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "totalAmplitude",
+            "docs": [
+              "Total amplitude in field"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "resonatorCount",
+            "docs": [
+              "Active resonator count"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "currentEpoch",
+            "docs": [
+              "Current epoch"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "emissionRate",
+            "docs": [
+              "Emission rate per epoch (scaled by PRECISION)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved for future use"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "PhaseCoupling",
+      "docs": [
+        "Phase coupling between resonators"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "source",
+            "docs": [
+              "The resonator doing the coupling (source)"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "target",
+            "docs": [
+              "The oscillator being coupled to (target)"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "couplingK",
+            "docs": [
+              "Coupling strength k (scaled by PRECISION, 0 to MAX_COUPLING_K)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "coupledAmplitude",
+            "docs": [
+              "Amplitude committed to this coupling"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "couplingEpoch",
+            "docs": [
+              "Epoch when coupling was created"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "sharedEmissions",
+            "docs": [
+              "Accumulated shared emissions"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved for future use"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Resonator",
+      "docs": [
+        "Individual resonator state"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "oscillator",
+            "docs": [
+              "The oscillator's public key"
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "amplitude",
+            "docs": [
+              "Tokens in coherence field"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "theta",
+            "docs": [
+              "Current phase angle θ (scaled by PRECISION, 0 to 2π)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "omega",
+            "docs": [
+              "Natural frequency ωᵢ (scaled by PRECISION)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tauK",
+            "docs": [
+              "Time coefficient — coherence depth (scaled by PRECISION)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "harmonicEntry",
+            "docs": [
+              "Epoch when resonance began"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "harmonicCycle",
+            "docs": [
+              "Selected harmonic cycle"
+            ],
+            "type": {
+              "defined": "HarmonicCycle"
+            }
+          },
+          {
+            "name": "phaseLockIntegral",
+            "docs": [
+              "Accumulated phase-lock score (scaled by PRECISION)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "phaseLockEpochs",
+            "docs": [
+              "Epochs above phase-lock threshold (for state transitions)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "vibeState",
+            "docs": [
+              "Current vibe state"
+            ],
+            "type": {
+              "defined": "VibeState"
+            }
+          },
+          {
+            "name": "lastClaimEpoch",
+            "docs": [
+              "Last epoch emissions were claimed"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "unclaimedEmissions",
+            "docs": [
+              "Accumulated unclaimed emissions"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "totalEmissions",
+            "docs": [
+              "Total emissions received"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved for future use"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "FieldParams",
+      "docs": [
+        "Parameters for field initialization"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "oracle",
+            "type": "publicKey"
+          },
+          {
+            "name": "emissionRate",
+            "type": "u64"
+          },
+          {
+            "name": "initialEmissionReserve",
+            "type": "u64"
+          },
+          {
+            "name": "initialGoldenReserve",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "HarmonicCycle",
+      "docs": [
+        "Harmonic cycle options"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "QuarterWave"
+          },
+          {
+            "name": "HalfWave"
+          },
+          {
+            "name": "FullWave"
+          },
+          {
+            "name": "GoldenWave"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VibeState",
+      "docs": [
+        "Vibe state of a resonator"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Attuning"
+          },
+          {
+            "name": "Resonant"
+          },
+          {
+            "name": "Entrained"
+          },
+          {
+            "name": "Golden"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "CoherencePeak",
+      "fields": [
+        {
+          "name": "epoch",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "orderParameter",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "resonatorsInPhase",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "EmissionsClaimed",
+      "fields": [
+        {
+          "name": "oscillator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "attunement",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "resonance",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "entrainment",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "thiccNow",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "total",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "vibeMultiplier",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "FieldUpdated",
+      "fields": [
+        {
+          "name": "epoch",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "globalPsi",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "orderParameter",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "networkTauK",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "totalAmplitude",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "resonatorCount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "GoldenAchieved",
+      "fields": [
+        {
+          "name": "oscillator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "tauK",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "epochsToGolden",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "totalEmissions",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PhaseCoupled",
+      "fields": [
+        {
+          "name": "source",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "target",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "couplingK",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "coupledAmplitude",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PhaseUncoupled",
+      "fields": [
+        {
+          "name": "source",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "target",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "epochsCoupled",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PhaseUpdated",
+      "fields": [
+        {
+          "name": "oscillator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "oldTheta",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "newTheta",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "phaseLock",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ResonatorDecohered",
+      "fields": [
+        {
+          "name": "oscillator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "returnedAmplitude",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "disruptionCost",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "epochsResonated",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ResonatorEntered",
+      "fields": [
+        {
+          "name": "oscillator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amplitude",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "harmonicCycle",
+          "type": {
+            "defined": "HarmonicCycle"
+          },
+          "index": false
+        },
+        {
+          "name": "entryEpoch",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "VibeStateTransition",
+      "fields": [
+        {
+          "name": "oscillator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "fromState",
+          "type": {
+            "defined": "VibeState"
+          },
+          "index": false
+        },
+        {
+          "name": "toState",
+          "type": {
+            "defined": "VibeState"
+          },
+          "index": false
+        },
+        {
+          "name": "tauK",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "phaseLock",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "AmplitudeTooLow",
+      "msg": "Amplitude below minimum threshold"
+    },
+    {
+      "code": 6001,
+      "name": "InsufficientAmplitude",
+      "msg": "Insufficient amplitude"
+    },
+    {
+      "code": 6002,
+      "name": "CouplingTooStrong",
+      "msg": "Coupling strength exceeds maximum (0.8)"
+    },
+    {
+      "code": 6003,
+      "name": "StillAttuning",
+      "msg": "Cannot phase-couple while still attuning"
+    },
+    {
+      "code": 6004,
+      "name": "AlreadyCoupled",
+      "msg": "Already phase-coupled to this target"
+    },
+    {
+      "code": 6005,
+      "name": "NotCoupled",
+      "msg": "Not phase-coupled to this target"
+    },
+    {
+      "code": 6006,
+      "name": "TooEarlyToDecohere",
+      "msg": "Cannot decohere before minimum period"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidPhase",
+      "msg": "Phase value out of valid range"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidVibeTransition",
+      "msg": "Invalid vibe state transition"
+    },
+    {
+      "code": 6009,
+      "name": "NotEligibleForTransition",
+      "msg": "Not eligible for vibe state transition"
+    },
+    {
+      "code": 6010,
+      "name": "UnauthorizedOracle",
+      "msg": "Only oracle can update field state"
+    },
+    {
+      "code": 6011,
+      "name": "UnauthorizedAuthority",
+      "msg": "Only authority can perform this action"
+    },
+    {
+      "code": 6012,
+      "name": "NoEmissionsToClaim",
+      "msg": "No emissions available to claim"
+    },
+    {
+      "code": 6013,
+      "name": "MathOverflow",
+      "msg": "Mathematical overflow"
+    },
+    {
+      "code": 6014,
+      "name": "MathUnderflow",
+      "msg": "Mathematical underflow"
+    },
+    {
+      "code": 6015,
+      "name": "InvalidHarmonicCycle",
+      "msg": "Invalid harmonic cycle"
+    },
+    {
+      "code": 6016,
+      "name": "FieldNotInitialized",
+      "msg": "Coherence field not initialized"
+    },
+    {
+      "code": 6017,
+      "name": "ResonatorNotFound",
+      "msg": "Resonator not found"
+    },
+    {
+      "code": 6018,
+      "name": "CannotSelfCouple",
+      "msg": "Cannot phase-couple to yourself"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidCouplingTarget",
+      "msg": "Coupling target is not a valid resonator"
+    },
+    {
+      "code": 6020,
+      "name": "EpochMismatch",
+      "msg": "Epoch mismatch - field needs update"
+    },
+    {
+      "code": 6021,
+      "name": "AlreadyGolden",
+      "msg": "Already in Golden state"
+    },
+    {
+      "code": 6022,
+      "name": "ReserveDepleted",
+      "msg": "Emission reserve depleted"
+    }
+  ]
+}
