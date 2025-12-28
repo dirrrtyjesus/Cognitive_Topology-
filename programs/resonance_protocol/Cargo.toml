@@ -1,0 +1,27 @@
+[package]
+name = "resonance_protocol"
+version = "0.1.0"
+description = "Resonance Protocol - Harmonic Field Contract for $AUGMNTD"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/dirrrtyjesus/Cognitive_Topology-"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "resonance_protocol"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+[dependencies]
+anchor-lang = "0.29.0"
+anchor-spl = "0.29.0"
+
+[dev-dependencies]
+solana-program-test = "1.17"
+solana-sdk = "1.17"
+tokio = "1.0"
