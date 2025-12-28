@@ -219,11 +219,11 @@ pub fn natural_frequency(amplitude: u64, base_omega: u64) -> Result<u64> {
 /// Generate pseudo-random phase from clock and pubkey
 pub fn random_phase(clock: u64, pubkey: &Pubkey) -> u64 {
     let bytes = pubkey.to_bytes();
-    let seed = bytes[0] as u64 
-        + (bytes[1] as u64) << 8 
-        + (bytes[2] as u64) << 16
-        + (bytes[3] as u64) << 24;
-    
+    let seed = (bytes[0] as u64)
+        | ((bytes[1] as u64) << 8)
+        | ((bytes[2] as u64) << 16)
+        | ((bytes[3] as u64) << 24);
+
     (seed.wrapping_mul(clock) ^ 0xDEADBEEF) % TWO_PI
 }
 
