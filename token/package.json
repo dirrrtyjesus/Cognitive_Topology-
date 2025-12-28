@@ -1,0 +1,16 @@
+{
+  "name": "augmntd-metadata",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "create": "npx tsx create_metadata.ts"
+  },
+  "dependencies": {
+    "@metaplex-foundation/mpl-token-metadata": "^3.2.1",
+    "@metaplex-foundation/umi": "^0.9.2",
+    "@metaplex-foundation/umi-bundle-defaults": "^0.9.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0"
+  }
+}
