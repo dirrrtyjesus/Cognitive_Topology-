@@ -2,7 +2,7 @@
   "name": "augmntd",
   "symbol": "AUGMNTD",
   "description": "The token of crystallized coherence. 'e' removed — energy given to pattern. Proof-of-Resonance on X1.",
-  "image": "https://augmntd.app/logo.png",
+  "image": "https://raw.githubusercontent.com/dirrrtyjesus/Cognitive_Topology-/main/token/logo.png",
   "external_url": "https://augmntd.app",
   "attributes": [
     {
@@ -48,7 +48,7 @@
     ],
     "files": [
       {
-        "uri": "https://augmntd.app/logo.png",
+        "uri": "https://raw.githubusercontent.com/dirrrtyjesus/Cognitive_Topology-/main/token/logo.png",
         "type": "image/png"
       }
     ]
