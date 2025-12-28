@@ -1,0 +1,56 @@
+{
+  "name": "augmntd",
+  "symbol": "AUGMNTD",
+  "description": "The token of crystallized coherence. 'e' removed — energy given to pattern. Proof-of-Resonance on X1.",
+  "image": "https://augmntd.app/logo.png",
+  "external_url": "https://augmntd.app",
+  "attributes": [
+    {
+      "trait_type": "Total Supply",
+      "value": "1,618,033,988"
+    },
+    {
+      "trait_type": "Supply Formula",
+      "value": "φ × 10⁹"
+    },
+    {
+      "trait_type": "Consensus",
+      "value": "Proof-of-Resonance"
+    },
+    {
+      "trait_type": "Target τₖ",
+      "value": "φ⁴ ≈ 6.854"
+    },
+    {
+      "trait_type": "Target NC",
+      "value": "50"
+    },
+    {
+      "trait_type": "Emission Decay",
+      "value": "φ⁻¹ per year"
+    },
+    {
+      "trait_type": "Freeze Authority",
+      "value": "Disabled"
+    },
+    {
+      "trait_type": "Philosophy",
+      "value": "Coherence over effort"
+    }
+  ],
+  "properties": {
+    "category": "currency",
+    "creators": [
+      {
+        "address": "69r8QkLnjMBxjw2rU5AQySg9Ze79XNJuFqmDLTMcsf72",
+        "share": 100
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://augmntd.app/logo.png",
+        "type": "image/png"
+      }
+    ]
+  }
+}
