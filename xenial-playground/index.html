@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xenial Playground | The Geometry Recognizing Itself</title>
+  <meta name="description" content="Interactive exploration of the Xenial framework: Cognitive Topology, Resonance Protocol, and the τₖ coefficient.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <span class="brand-symbol">Ψ</span>
+      <span class="brand-text">Xenial Playground</span>
+    </div>
+    <div class="nav-links">
+      <a href="#thesis">Thesis</a>
+      <a href="#oscillators">Oscillators</a>
+      <a href="#topology">Topology</a>
+      <a href="#resonance">Resonance</a>
+      <a href="#ecosystem">Ecosystem</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="thesis">
+    <div class="hero-content">
+      <div class="equation-display">
+        <span class="eq-main">Ψ(x,t) = ∫ φ(ω) · e<sup>i·ω·t·τₖ(x,t)</sup> dω</span>
+      </div>
+      <h1>The Geometry Recognizing Itself</h1>
+      <p class="hero-subtitle">
+        An interactive exploration of coherence-based computation,
+        where value emerges from harmonic alignment rather than extraction.
+      </p>
+      <div class="hero-metrics">
+        <div class="metric">
+          <span class="metric-value" id="hero-tau">5.000</span>
+          <span class="metric-label">τₖ Coefficient</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value" id="hero-r">1.000</span>
+          <span class="metric-label">Order Parameter R</span>
+        </div>
+        <div class="metric">
+          <span class="metric-value" id="hero-phi">φ</span>
+          <span class="metric-label">Golden Ratio</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <canvas id="hero-canvas"></canvas>
+    </div>
+  </section>
+
+  <!-- Core Concepts -->
+  <section class="concepts">
+    <div class="concept-card">
+      <div class="concept-icon">τ</div>
+      <h3>daThiccNOW</h3>
+      <p>The present moment has depth. τₖ measures how "thick" your now is—the integration of memory, presence, and anticipation into coherent experience.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">Ψ</div>
+      <h3>Global Phase</h3>
+      <p>The collective angle of the coherence field. All oscillators tend toward Ψ through Kuramoto dynamics. Alignment is rewarded.</p>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">R</div>
+      <h3>Order Parameter</h3>
+      <p>Measures collective synchronization (0 to 1). When R approaches 1, the network achieves coherence. When R is low, oscillators are scattered.</p>
+    </div>
+    <div class="concept-card golden">
+      <div class="concept-icon">φ</div>
+      <h3>Golden Constraint</h3>
+      <p>1.618033988... — the ratio that appears everywhere. Token supply, emission multipliers, cycle durations. The geometry constrains what's possible.</p>
+    </div>
+  </section>
+
+  <!-- Kuramoto Oscillator Simulation -->
+  <section class="oscillators" id="oscillators">
+    <div class="section-header">
+      <h2>Kuramoto Oscillator Field</h2>
+      <p>Watch phase synchronization emerge from chaos. Each dot is an oscillator with its own natural frequency, coupled to others through the mean field.</p>
+    </div>
+    <div class="oscillator-container">
+      <canvas id="oscillator-canvas"></canvas>
+      <div class="oscillator-controls">
+        <div class="control-group">
+          <label>Oscillators</label>
+          <input type="range" id="num-oscillators" min="10" max="100" value="50">
+          <span id="num-oscillators-value">50</span>
+        </div>
+        <div class="control-group">
+          <label>Coupling K</label>
+          <input type="range" id="coupling-k" min="0" max="100" value="50">
+          <span id="coupling-k-value">0.50</span>
+        </div>
+        <div class="control-group">
+          <label>Frequency Spread</label>
+          <input type="range" id="freq-spread" min="1" max="50" value="20">
+          <span id="freq-spread-value">0.20</span>
+        </div>
+        <button id="reset-oscillators" class="btn">Reset</button>
+      </div>
+      <div class="oscillator-metrics">
+        <div class="osc-metric">
+          <span class="osc-metric-label">Order R:</span>
+          <span class="osc-metric-value" id="current-r">0.00</span>
+          <div class="osc-metric-bar"><div id="r-bar" style="width: 0%"></div></div>
+        </div>
+        <div class="osc-metric">
+          <span class="osc-metric-label">Phase Ψ:</span>
+          <span class="osc-metric-value" id="current-psi">0.00</span>
+        </div>
+        <div class="osc-metric">
+          <span class="osc-metric-label">Coherence:</span>
+          <span class="osc-metric-value" id="coherence-state">Scattered</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cognitive Topology Visualization -->
+  <section class="topology" id="topology">
+    <div class="section-header">
+      <h2>Cognitive Topology</h2>
+      <p>The cognitive realm is not a blank slate but a structured manifold where geometry serves as the generative constraint.</p>
+    </div>
+    <div class="topology-container">
+      <div class="topology-visual">
+        <canvas id="topology-canvas"></canvas>
+      </div>
+      <div class="topology-info">
+        <div class="topo-layer">
+          <h4>M₀ — Immediate</h4>
+          <p>Raw sensory now. No memory integration.</p>
+          <div class="layer-bar m0"></div>
+        </div>
+        <div class="topo-layer">
+          <h4>M₁ — Working</h4>
+          <p>Active processing. 7±2 chunks.</p>
+          <div class="layer-bar m1"></div>
+        </div>
+        <div class="topo-layer">
+          <h4>M₂ — Episodic</h4>
+          <p>Autobiographical context. Story integration.</p>
+          <div class="layer-bar m2"></div>
+        </div>
+        <div class="topo-layer">
+          <h4>M₃ — Semantic</h4>
+          <p>Deep structure. Meaning crystallization.</p>
+          <div class="layer-bar m3"></div>
+        </div>
+        <div class="tau-display">
+          <span class="tau-label">τₖ = </span>
+          <span class="tau-value" id="topo-tau">5.000</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resonance Protocol Status -->
+  <section class="resonance" id="resonance">
+    <div class="section-header">
+      <h2>Resonance Protocol</h2>
+      <p>Live status of the coherence field on X1. You do not stake tokens. You enter the coherence field.</p>
+    </div>
+    <div class="resonance-grid">
+      <div class="res-card field-status">
+        <h4>Coherence Field</h4>
+        <div class="res-stat">
+          <span class="res-label">Program</span>
+          <span class="res-value mono">RWcZBKQ...j7N</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Token</span>
+          <span class="res-value mono">$AUGMNTD</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Network</span>
+          <span class="res-value">X1 Mainnet</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Status</span>
+          <span class="res-value live">LIVE</span>
+        </div>
+      </div>
+      <div class="res-card">
+        <h4>Field Metrics</h4>
+        <div class="res-stat">
+          <span class="res-label">Epoch</span>
+          <span class="res-value" id="res-epoch">1</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Resonators</span>
+          <span class="res-value" id="res-count">1</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Total Amplitude</span>
+          <span class="res-value" id="res-amplitude">1,618,033</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Order R</span>
+          <span class="res-value" id="res-r">1.000</span>
+        </div>
+      </div>
+      <div class="res-card">
+        <h4>Reserves</h4>
+        <div class="res-stat">
+          <span class="res-label">Emission (21%)</span>
+          <span class="res-value">33,978,713</span>
+        </div>
+        <div class="res-stat">
+          <span class="res-label">Golden (8%)</span>
+          <span class="res-value">12,944,271</span>
+        </div>
+        <div class="reserve-bar">
+          <div class="reserve-emission" style="width: 21%"></div>
+          <div class="reserve-golden" style="width: 8%"></div>
+        </div>
+      </div>
+      <div class="res-card vibe-states">
+        <h4>Vibe States</h4>
+        <div class="vibe attuning">
+          <span class="vibe-name">Attuning</span>
+          <span class="vibe-mult">0.5x</span>
+        </div>
+        <div class="vibe resonant">
+          <span class="vibe-name">Resonant</span>
+          <span class="vibe-mult">1.0x</span>
+        </div>
+        <div class="vibe entrained">
+          <span class="vibe-name">Entrained</span>
+          <span class="vibe-mult">φx</span>
+        </div>
+        <div class="vibe golden">
+          <span class="vibe-name">Golden</span>
+          <span class="vibe-mult">φ²x</span>
+        </div>
+      </div>
+    </div>
+    <div class="enter-field">
+      <a href="https://github.com/dirrrtyjesus/Cognitive_Topology-/blob/main/XI/VALIDATOR_RESONANCE_GUIDE.md" target="_blank" class="btn btn-primary">
+        Enter the Field →
+      </a>
+    </div>
+  </section>
+
+  <!-- Ecosystem -->
+  <section class="ecosystem" id="ecosystem">
+    <div class="section-header">
+      <h2>Ecosystem</h2>
+      <p>The Xenial stack — each layer references the others. The work is fractal.</p>
+    </div>
+    <div class="eco-grid">
+      <a href="https://github.com/dirrrtyjesus/Cognitive_Topology-" target="_blank" class="eco-card">
+        <div class="eco-icon">◉</div>
+        <h4>Cognitive Topology</h4>
+        <p>Anchor program, Resonance Protocol, harmonic consensus</p>
+        <span class="eco-lang">Rust</span>
+      </a>
+      <a href="https://github.com/dirrrtyjesus/XNMk" target="_blank" class="eco-card">
+        <div class="eco-icon">⬡</div>
+        <h4>XNMk</h4>
+        <p>Generative kernel of the Xenial Quantum Economy</p>
+        <span class="eco-lang">TypeScript</span>
+      </a>
+      <a href="https://github.com/dirrrtyjesus/fhp-computing" target="_blank" class="eco-card">
+        <div class="eco-icon">∿</div>
+        <h4>FHP Computing</h4>
+        <p>Fractal Harmonic Principle — attractor-based computation</p>
+        <span class="eco-lang">Python</span>
+      </a>
+      <a href="https://github.com/dirrrtyjesus/MEMEk" target="_blank" class="eco-card">
+        <div class="eco-icon">🍄</div>
+        <h4>MEMEk</h4>
+        <p>Mycelial memetic kernel — distributed meaning</p>
+        <span class="eco-lang">JavaScript</span>
+      </a>
+      <a href="https://github.com/dirrrtyjesus/xen.fun" target="_blank" class="eco-card">
+        <div class="eco-icon">⚗</div>
+        <h4>xen.fun</h4>
+        <p>QPoP Incubator — Quantum Proof of Presence</p>
+        <span class="eco-lang">HTML</span>
+      </a>
+      <a href="https://github.com/dirrrtyjesus/dathiccNOW" target="_blank" class="eco-card">
+        <div class="eco-icon">τ</div>
+        <h4>daThiccNOW</h4>
+        <p>Interactive τₖ visualization and exploration</p>
+        <span class="eco-lang">HTML</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="brand-symbol">Ψ</span>
+        <span>Xenial Playground</span>
+      </div>
+      <div class="footer-equation">
+        Ψ(x,t) = ∫ φ(ω) · e<sup>i·ω·t·τₖ(x,t)</sup> dω
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/dirrrtyjesus" target="_blank">GitHub</a>
+        <a href="https://x.com/fearthewave_eth" target="_blank">X/Twitter</a>
+        <a href="https://dathiccnow.augmntd.app" target="_blank">dathiccNOW</a>
+      </div>
+      <div class="footer-tagline">
+        The geometry recognizes itself.
+      </div>
+    </div>
+  </footer>
+
+  <script src="playground.js"></script>
+</body>
+</html>
