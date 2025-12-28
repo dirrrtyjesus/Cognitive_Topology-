@@ -8,7 +8,9 @@
     "decohere": "npx tsx decohere.ts",
     "couple": "npx tsx phase_couple.ts",
     "uncouple": "npx tsx uncouple.ts",
-    "claim": "npx tsx claim_emissions.ts"
+    "claim": "npx tsx claim_emissions.ts",
+    "update-field": "npx tsx update_field.ts",
+    "crank": "npx tsx crank_resonators.ts"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
